@@ -1,33 +1,42 @@
 #pragma once
+
 #include "Matrix.h"
 #include "Neuron.h"
 #include <vector>
-#include <iostream>
-using namespace std;
+
+using std::cout;
+using std::endl;
 
 class Layer
 {
 public:
-	// size means how many neurons should be in this layer
+
 	Layer(int size);
+	Layer(vector <double> values);
+	Layer(vector <double> values, int function);
+	Layer(vector <double> values, int function, double a);
+
 	~Layer();
-	// set specifis value
-	void setval(int index, double value)
-	{
-		neurons[index]->set_val(value); 
-	}
-	void setval(int index, double value, int function)
-	{
-		neurons[index]->set_val(value, function);
-	}
-	// get delivered, activation or derivative value as matrix 1 x size
-	Matrix * matrixifyValues();
-	Matrix * matrixifyActValues();
-	Matrix * matrixifyDerValues();
-	// print whole layer
-	void print_layer(int which);
-	int getsize() { return this->size; }
+
+	void print(int);
+
+	void setNeuron(int index, double value);
+	void setNeuron(int index, double value, int function);
+	void setNeuron(int index, double value, int function, double a);
+
+	void setLayer(vector <double> values);
+
+	Matrix * matrixifyDelivered();
+	Matrix * matrixifyActivated();
+	Matrix * matrixifyDerived();
+
+	void activateLayer();
+	void activateLayer(int function);
+	void activateLayer(int function, double a);
+
+	void erase();
+
 private:
 	int size;
-	vector<Neuron *> neurons;
+	vector <Neuron *> neurons;
 };

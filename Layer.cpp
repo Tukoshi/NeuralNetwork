@@ -1,66 +1,157 @@
 #include "Layer.h"
 
 
+void Layer::activateLayer()
+{
+	for (int i = 0; i < this->size; i++)
+	{
+		this->neurons.at(i)->activate();
+	}
+}
+void Layer::activateLayer(int function)
+{
+	for (int i = 0; i < this->size; i++)
+	{
+		this->neurons.at(i)->activate(function);
+	}
+}
+void Layer::activateLayer(int function, double a)
+{
+	for (int i = 0; i < this->size; i++)
+	{
+		this->neurons.at(i)->activate(function, a);
+	}
+}
+
+
+void Layer::erase()
+{
+	for (int i = 0; i < this->size; i++)
+	{
+		delete this->neurons.at(i);
+	}
+	this->neurons.clear();
+	this->size = 0;
+
+}
+
+void Layer::setLayer(vector <double> values)
+{
+	this->erase();
+	this->size = size;
+	for (int i = 0; i < this->size; i++)
+	{
+		Neuron * new_neuron = new Neuron(values.at(i));
+		this->neurons.push_back(new_neuron);
+	}
+}
+
+void Layer::setNeuron(int index, double value)
+{
+	this->neurons.at(index)->setvalue(value);
+}
+void Layer::setNeuron(int index, double value, int function)
+{
+	this->neurons.at(index)->setvalue(value, function);
+}
+void Layer::setNeuron(int index, double value, int function, double a)
+{
+	this->neurons.at(index)->setvalue(value, function, a);
+}
+
+void Layer::print(int type)
+{
+	for (int i = 0; i < this->size; i++)
+	{
+		if (type == 0)
+		{
+			cout << this->neurons.at(i)->get_value() << "\n";
+		}
+		else if (type == 1)
+		{
+			cout << this->neurons.at(i)->get_avalue() << "\n";
+		}
+		else if (type == 2)
+		{
+			cout << this->neurons.at(i)->get_dvalue() << "\n";
+		}
+	}
+}
+
+
 Layer::Layer(int size)
 {
 	this->size = size;
-	for (int i = 0; i < size; i++)
+	for (int i = 0; i < this->size; i++)
 	{
-		Neuron * n = new Neuron(0.00);
-		neurons.push_back(n);
+		Neuron * new_neuron = new Neuron();
+		this->neurons.push_back(new_neuron);
 	}
+	this->activateLayer();
+}
+Layer::Layer(vector <double> values)
+{
+	this->size = values.size();
+	for (int i = 0; i < this->size; i++)
+	{
+		Neuron * new_neuron = new Neuron(values.at(i));
+		this->neurons.push_back(new_neuron);
+	}
+	this->activateLayer();
+}
+Layer::Layer(vector <double> values, int function)
+{
+	this->size = values.size();
+	for (int i = 0; i < this->size; i++)
+	{
+		Neuron * new_neuron = new Neuron(values.at(i), function);
+		this->neurons.push_back(new_neuron);
+	}
+	this->activateLayer();
+}
+Layer::Layer(vector <double> values, int function, double a)
+{
+	this->size = values.size();
+	for (int i = 0; i < this->size; i++)
+	{
+		Neuron * new_neuron = new Neuron(values.at(i), function);
+		this->neurons.push_back(new_neuron);
+	}
+	this->activateLayer();
 }
 Layer::~Layer()
 {
-	
 	for (int i = 0; i < this->size; i++)
 	{
 		delete this->neurons.at(i);
 	}
 }
 
-// get matrixified delivered values
-Matrix * Layer::matrixifyValues()
+
+Matrix * Layer::matrixifyDelivered()
 {
-	
-	Matrix * m = new Matrix(1, this->size, true);
+	Matrix * new_m = new Matrix(this->size, 1, true);
 	for (int i = 0; i < this->size; i++)
 	{
-		m->set_value(0, i, this->neurons.at(i)->get_value());
+		new_m->set_value(i, 1, this->neurons.at(i)->get_value());
 	}
-	return m;
-
+	return new_m;
 }
-
-// get matrixified activation values
-Matrix * Layer::matrixifyActValues()
+Matrix * Layer::matrixifyActivated()
 {
-	Matrix * m = new Matrix(1, this->size, true);
+	Matrix * new_m = new Matrix(this->size, 1, true);
 	for (int i = 0; i < this->size; i++)
 	{
-		m->set_value(0, i, this->neurons.at(i)->get_avalue());
+		new_m->set_value(i, 1, this->neurons.at(i)->get_avalue());
 	}
-	return m;
+	return new_m;
 }
-// get matrixified derivative values
-Matrix * Layer::matrixifyDerValues()
+Matrix * Layer::matrixifyDerived()
 {
-	Matrix * m = new Matrix(1, this->size, true);
+	Matrix * new_m = new Matrix(this->size, 1, true);
 	for (int i = 0; i < this->size; i++)
 	{
-		m->set_value(0, i, this->neurons.at(i)->get_dvalue());
+		new_m->set_value(i, 1, this->neurons.at(i)->get_dvalue());
 	}
-	return m;
-}
-
-void Layer::print_layer(int which = 0)
-{
-	int size = this->neurons.size();
-	for (int i = 0; i < size; i++)
-	{
-		if (which == 0) cout << this->neurons.at(i)->get_value() << " ";
-		else if (which == 1) cout << this->neurons.at(i)->get_avalue() << " ";
-		else if (which == 2) cout << this->neurons.at(i)->get_dvalue() << " ";
-	}
-	cout << "\n";
+	return new_m;
 }
