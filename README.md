@@ -6,7 +6,7 @@ There is implemented:
 - layer of neurons (no memory leaks)
 - simple matrix that was used for multiplication (may cause memory leaks - you need to remember to deallocate memory)
 - neural network with:
-  - simple error calculation (needs to be rebuild - now it uses absolute value instad of quadratic error)
+  - simple error calculation (needs to be rebuild - now it uses absolute value instead of quadratic error)
   - feedforward algorithm (no memory leaks)
   - backpropagation algorith (no memory leaks)
 
