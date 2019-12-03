@@ -12,5 +12,5 @@ There is implemented:
 
 This simple neural network is inspired by this series:
 https://youtu.be/PQo78WNGiow
-There is LOTS of memory leaks in first implementation of NN in this series(author made another video where he refactors it)
+There are LOTS of memory leaks in first implementation of NN in this series(author made another video where he refactors it)
 that I took care of and avoided in my implementation. 
